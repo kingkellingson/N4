@@ -42,4 +42,49 @@ app.post('/api/projects', async (req, res) => {
     }
   });
 
+  // Get a list of all projects
+app.get('/api/projects', async (req, res) => {
+    try {
+      let projects = await Project.find();
+      res.send(projects);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+  });
+
+  // Schema for items
+const itemSchema = new mongoose.Schema({
+    project: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Project'
+    },
+    text: String,
+    completed: Boolean,
+})
+
+// Model for items
+const Item = mongoose.model('Item',itemSchema);
+
+//create items
+app.post('/api/projects/:projectID/items', async (req, res) => {
+    try {
+        let project = await Project.findOne({_id: req.params.projectID});
+        if (!project) {
+            res.send(404);
+            return;
+        }
+        let item = new Item({
+            project: project,
+            text: req.body.text,
+            completed: req.body.completed,
+        });
+        await item.save();
+        res.send(item);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
 app.listen(3000, () => console.log('Server listening on port 3000!'));
