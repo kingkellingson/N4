@@ -42,7 +42,7 @@ app.post('/api/projects', async (req, res) => {
     }
   });
 
-  app.delete('/api/projects/:projectID/items/:itemID', async (req, res) => {
+  app.delete('/api/projects', async (req, res) => {
     try {
         await Project.deleteMany({});
         let projects = await Project.find();
