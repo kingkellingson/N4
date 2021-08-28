@@ -44,12 +44,7 @@ app.post('/api/projects', async (req, res) => {
 
   app.delete('/api/projects/:projectID/items/:itemID', async (req, res) => {
     try {
-        let item = await Project.find();
-        if (!item) {
-            res.send(404);
-            return;
-        }
-        await item.delete();
+        await Project.deleteMany({});
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
