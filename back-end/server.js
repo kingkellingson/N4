@@ -42,6 +42,21 @@ app.post('/api/projects', async (req, res) => {
     }
   });
 
+  app.delete('/api/projects/:projectID/items/:itemID', async (req, res) => {
+    try {
+        let item = await Project.find();
+        if (!item) {
+            res.send(404);
+            return;
+        }
+        await item.delete();
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+  });
+
   // Get a list of all projects
 app.get('/api/projects', async (req, res) => {
     try {
@@ -121,6 +136,21 @@ app.put('/api/projects/:projectID/items/:itemID', async (req, res) => {
   }
 });
 
+
+app.delete('/api/projects/:projectID/items/:itemID', async (req, res) => {
+  try {
+      let item = await Item.findOne({_id:req.params.itemID, project: req.params.projectID});
+      if (!item) {
+          res.send(404);
+          return;
+      }
+      await item.delete();
+      res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+  }
+});
 
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

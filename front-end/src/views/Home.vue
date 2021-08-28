@@ -56,6 +56,9 @@ export default {
   },
   created() {
     this.getProjects();
+    console.log("before delete")
+    this.deleteProjects();
+    console.log("after delete")
   },
   computed: {
     activeItems() {
@@ -83,6 +86,13 @@ export default {
           color: this.color.hex,
         });
         await this.getProjects();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteProjects() {
+      try {
+        await axios.delete("/api/projects");
       } catch (error) {
         console.log(error);
       }
