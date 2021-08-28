@@ -45,6 +45,8 @@ app.post('/api/projects', async (req, res) => {
   app.delete('/api/projects/:projectID/items/:itemID', async (req, res) => {
     try {
         await Project.deleteMany({});
+        let projects = await Project.find();
+        console.log("found this in database ", projects)
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
