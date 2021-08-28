@@ -87,4 +87,40 @@ app.post('/api/projects/:projectID/items', async (req, res) => {
     }
 });
 
+//read a project
+app.get('/api/projects/:projectID/items', async (req, res) => {
+  try {
+      let project = await Project.findOne({_id: req.params.projectID});
+      if (!project) {
+          res.send(404);
+          return;
+      }
+      let items = await Item.find({project:project});
+      res.send(items);
+  } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+  }
+});
+
+
+app.put('/api/projects/:projectID/items/:itemID', async (req, res) => {
+  try {
+      let item = await Item.findOne({_id:req.params.itemID, project: req.params.projectID});
+      if (!item) {
+          res.send(404);
+          return;
+      }
+      item.text = req.body.text;
+      item.completed = req.body.completed;
+      await item.save();
+      res.send(item);
+  } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+  }
+});
+
+
+
 app.listen(3000, () => console.log('Server listening on port 3000!'));
