@@ -56,9 +56,9 @@ export default {
   },
   created() {
     this.getProjects();
-    console.log("before delete")
-    this.deleteProjects();
-    console.log("after delete")
+    //console.log("before delete")
+    //this.deleteProjects();
+    //console.log("after delete")
   },
   computed: {
     activeItems() {
